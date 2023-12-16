@@ -1,5 +1,9 @@
-using Authentication.Client.Pages;
-using Authentication.Components;
+global using Authentication.Client.Pages;
+global using Authentication.Client.Shared;
+global using Authentication.Components;
+global using Authentication.Models;
+global using Authentication.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +11,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+//Authentication code
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<HttpClient>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(cookieOptions =>
+{
+    cookieOptions.LoginPath = "/Login";
+});
+//End Authentication code
 
 var app = builder.Build();
 

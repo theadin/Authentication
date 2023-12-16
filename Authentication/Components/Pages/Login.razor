@@ -1,0 +1,20 @@
+﻿@page "/Login"
+@inject IAuthService AuthService
+@inject NavigationManager _NavigationManager
+<h3>Login</h3>
+
+<form @formname="Starship1" @onsubmit="SubmitAsync" method="post" data-enhance>
+    <button type="submit">Submit</button>
+    <AntiforgeryToken></AntiforgeryToken>
+</form>
+
+@code {
+    private async Task SubmitAsync()
+    {
+
+        bool success = await AuthService.CheckLoginAsync("", "");
+        if (success)
+            _NavigationManager.NavigateTo("/", true);
+
+    }
+}

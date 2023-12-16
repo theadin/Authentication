@@ -1,7 +1,10 @@
 ﻿@page "/"
-
+@inject NavigationManager _NavigationManager
+@rendermode InteractiveServer @* Cannot use Auto or WebAssembly in pages that are not in the Client project*@
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<button @onclick="logout">Log Out</button>
