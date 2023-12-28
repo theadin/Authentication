@@ -1,4 +1,4 @@
-﻿@page "/Login"
+@page "/Login"
 @inject IAuthService AuthService
 @inject NavigationManager _NavigationManager
 <h3>Login</h3>
@@ -9,12 +9,19 @@
 </form>
 
 @code {
+    [SupplyParameterFromQuery]
+    [Parameter]
+    public string? ReturnUrl { get; set; }
+
     private async Task SubmitAsync()
     {
 
         bool success = await AuthService.CheckLoginAsync("", "");
-        if (success)
-            _NavigationManager.NavigateTo("/", true);
-
+        if (success){
+            if (ReturnUrl is null)
+                _NavigationManager.NavigateTo("/", true);
+            else
+                _NavigationManager.NavigateTo(ReturnUrl, true);
+        }
     }
 }
